@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE generatorConfiguration
+        PUBLIC "-//mybatis.org//DTD MyBatis Generator Configuration 1.0//EN"
+        "http://mybatis.org/dtd/mybatis-generator-config_1_0.dtd">
+
+<generatorConfiguration>
+    <properties resource="application.properties"></properties>
+    <!--defaultModelType用于指定生成对象的样式，flat表示每一张表只生成一个实体类，这个实体类包含表中的所有字段。-->
+    <context id="MySQLTables" targetRuntime="MyBatis3" defaultModelType="flat">
+        <property name="javaFileEncoding" value="UTF-8"/>
+
+        <!-- 生成的实体类实现序列化接口 -->
+        <plugin type="org.mybatis.generator.plugins.SerializablePlugin"/>
+
+        <commentGenerator>
+            <property name="dateFormat" value="yyyy-MM-dd HH:mm:ss"/>
+        </commentGenerator>
+
+        <!--数据库连接信息-->
+        <jdbcConnection driverClass="${spring.datasource.driverClassName}"
+                        connectionURL="${spring.datasource.url}"
+                        userId="${spring.datasource.username}"
+                        password="${spring.datasource.password}">
+        </jdbcConnection>
+
+        <!-- 配置生成的实体类位置 -->
+        <javaModelGenerator targetPackage="one.more.mybatisgenerator.model" targetProject="src/main/java">
+            <!-- 设置是否在setter方法中，对String类型字段调用trim()方法 -->
+            <property name="trimStrings" value="true"/>
+        </javaModelGenerator>
+
+        <!-- 配置接口位置 -->
+        <!-- type设置为ANNOTATEDMAPPER，基于注解的Mapper，不会有对应的xml文件生成-->
+        <javaClientGenerator targetPackage="one.more.mybatisgenerator.mapper" targetProject="src/main/java"
+                             type="ANNOTATEDMAPPER">
+        </javaClientGenerator>
+
+        <!-- 配置数据库表 -->
+        <table tableName="user_info">
+            <!--在生成的insert元素上添加useGeneratedKeys=”true”和keyProperty属性-->
+            <generatedKey column="id" sqlStatement="JDBC"/>
+        </table>
+    </context>
+</generatorConfiguration>
